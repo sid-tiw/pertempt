@@ -13,12 +13,12 @@ using namespace std;
 
 string treasure = "d-table table-fixed col-12 width-full py-4 border-bottom border-gray-light";
 string nm = "<span class=\"f4 link-gray-dark\">";
-string uname = "<span class=\"link-gray pl-1\">";
 
 class person
 {
 private:
 	string name, user_name, about, loc_univ, tot_string, image;
+	string uname;
 	void init()
 	{
 		name = "";
@@ -27,6 +27,7 @@ private:
 		about = "";
 		loc_univ = "";
 		tot_string = "";
+		uname = "<span class=\"link-gray pl-1\">";
 	}
 	void allot_image()
 	{
@@ -41,6 +42,8 @@ private:
 		ind += nm.size();
 		for (int i = ind; tot_string.at(i) != '<'; i++)
 			name += tot_string.at(i);
+		if(name == "")
+			uname = "<span class=\"link-gray\">";
 	}
 	void allot_user_name()
 	{
@@ -55,7 +58,7 @@ public:
 	person(FILE *ptr, long int pos)
 	{
 		init();
-		fseek(ptr, pos, SEEK_CUR);
+		fseek(ptr, pos, SEEK_SET);
 		char ch;
 		while (fscanf(ptr, "%c", &ch) != -1)
 			if (ch == '<')
@@ -86,9 +89,17 @@ public:
 		allot_user_name();
 		allot_loc_univ();
 	}
+	void print_details()
+	{
+		cout << "-----------------\n";
+		cout << "Name: " << name << "\n";
+		cout << "User Name: " << user_name << "\n";
+		cout << "Image link: " << image << "\n";
+		cout << "-----------------\n";
+	}
 };
 
-vector<int> search(FILE *ptr, string srch)
+vector<person> search(FILE *ptr, string srch)
 {
 	vector<int> positions;
 	long int pos = 0;
@@ -106,13 +117,12 @@ vector<int> search(FILE *ptr, string srch)
 			temp += ch;
 		}
 		if (temp == srch)
-		{
 			positions.push_back(i);
-			break;
-		}
 	}
-	person obj(ptr, positions.at(0));
-	return positions;
+	vector<person> p_list;
+	for(int i=0;i<positions.size();i++)
+		p_list.push_back(person(ptr, positions.at(i)));
+	return p_list;
 }
 
 int main()
@@ -122,13 +132,16 @@ int main()
 	FILE *fptr = fopen("i-msid.txt", "w");
 	char mess[10000];
 	curl_easy_setopt(pnt, CURLOPT_WRITEDATA, fptr);
-	curl_easy_setopt(pnt, CURLOPT_HEADER, 1);
+	// curl_easy_setopt(pnt, CURLOPT_HEADER, 1);
 	curl_easy_setopt(pnt, CURLOPT_ERRORBUFFER, mess);
 	curl_easy_setopt(pnt, CURLOPT_URL, "https://github.com/i-msid?tab=followers");
 	curl_easy_perform(pnt);
 	cout << mess << "\n";
 	FILE *fop = fopen("i-msid.txt", "r");
-	search(fop, treasure);
+	vector<person> temp;
+	temp = search(fop, treasure);
+	for(int i=0;i<temp.size();i++)
+		temp[i].print_details();
 	// cout << search(fop, treasure).at(0) << "\n";
 	return 0;
 }
