@@ -11,6 +11,9 @@
 
 using namespace std;
 
+string treasure = "d-table table-fixed col-12 width-full py-4 border-bottom border-gray-light";
+string nm = "<span class=\"f4 link-gray-dark\">";
+
 class person
 {
 private:
@@ -31,7 +34,13 @@ private:
 		for (int i = ind; tot_string.at(i) != '\"'; i++)
 			image += tot_string.at(i);
 	}
-	void allot_name() {}
+	void allot_name()
+	{
+		size_t ind = tot_string.find(nm, 0);
+		ind += nm.size();
+		for (int i = ind; tot_string.at(i) != '<'; i++)
+			name += tot_string.at(i);
+	}
 	void allot_user_name() {}
 	void allot_loc_univ() {}
 
@@ -71,8 +80,6 @@ public:
 		allot_loc_univ();
 	}
 };
-
-string treasure = "d-table table-fixed col-12 width-full py-4 border-bottom border-gray-light";
 
 vector<int> search(FILE *ptr, string srch)
 {
