@@ -8,6 +8,9 @@
 #ifdef WIN32
 #include <unistd.h>
 #endif
+#define MAX_SIZE 10000
+#define _FIRST_ "followers"
+#define _SECOND_ "following"
 
 using namespace std;
 
@@ -42,8 +45,9 @@ private:
 		ind += nm.size();
 		for (int i = ind; tot_string.at(i) != '<'; i++)
 			name += tot_string.at(i);
-		if(name == "")
+		if (name == "")
 			uname = "<span class=\"link-gray\">";
+		name = remove_trailing_spaces(name);
 	}
 	void allot_user_name()
 	{
@@ -51,8 +55,29 @@ private:
 		ind += uname.size();
 		for (int i = ind; tot_string.at(i) != '<'; i++)
 			user_name += tot_string.at(i);
+		user_name = remove_trailing_spaces(user_name);
 	}
 	void allot_loc_univ() {}
+	string remove_trailing_spaces(string strn)
+	{
+		for (int i = 0; i < strn.size(); i++)
+		{
+			if (strn[i] == 32)
+				strn.erase(i);
+			else
+				break;
+			i--;
+		}
+		for (int i = strn.size() - 1; i >= 0; i--)
+		{
+			if (strn[i] == 32)
+				strn.erase(i);
+			else
+				break;
+			i++;
+		}
+		return strn;
+	}
 
 public:
 	person(FILE *ptr, long int pos)
@@ -89,6 +114,11 @@ public:
 		allot_user_name();
 		allot_loc_univ();
 	}
+	person(string name, string user_name)
+	{
+		this->name = name;
+		this->user_name = user_name;
+	}
 	void print_details()
 	{
 		cout << "-----------------\n";
@@ -96,6 +126,12 @@ public:
 		cout << "User Name: " << user_name << "\n";
 		cout << "Image link: " << image << "\n";
 		cout << "-----------------\n";
+	}
+	bool operator==(person &som)
+	{
+		if (user_name == som.user_name)
+			return true;
+		return false;
 	}
 };
 
@@ -106,7 +142,6 @@ vector<person> search(FILE *ptr, string srch)
 	char ch;
 	while (fscanf(ptr, "%c", &ch) != -1)
 		pos++;
-	cout << srch.size() << "\n";
 	for (long int i = 0; i <= pos - srch.size(); i++)
 	{
 		fseek(ptr, i, SEEK_SET);
@@ -120,28 +155,34 @@ vector<person> search(FILE *ptr, string srch)
 			positions.push_back(i);
 	}
 	vector<person> p_list;
-	for(int i=0;i<positions.size();i++)
+	for (int i = 0; i < positions.size(); i++)
 		p_list.push_back(person(ptr, positions.at(i)));
 	return p_list;
 }
 
-int main()
+void fetch_list(string user_name, string tab)
 {
 	curl_global_init(CURL_GLOBAL_ALL);
+	string url_link = "https://github.com/" + user_name + "?tab=" + tab;
 	CURL *pnt = curl_easy_init();
-	FILE *fptr = fopen("i-msid.txt", "w");
-	char mess[10000];
+	FILE *fptr = fopen((user_name + "_" + tab + ".txt").c_str(), "w");
+	fstream log("error.log", ios::app);
+	char err[MAX_SIZE];
 	curl_easy_setopt(pnt, CURLOPT_WRITEDATA, fptr);
-	// curl_easy_setopt(pnt, CURLOPT_HEADER, 1);
-	curl_easy_setopt(pnt, CURLOPT_ERRORBUFFER, mess);
-	curl_easy_setopt(pnt, CURLOPT_URL, "https://github.com/i-msid?tab=followers");
+	curl_easy_setopt(pnt, CURLOPT_HEADER, 1);
+	curl_easy_setopt(pnt, CURLOPT_ERRORBUFFER, err);
+	curl_easy_setopt(pnt, CURLOPT_URL, url_link);
 	curl_easy_perform(pnt);
-	cout << mess << "\n";
-	FILE *fop = fopen("i-msid.txt", "r");
+	log << err;
+	FILE *fop = fopen((user_name + "_" + tab + ".txt").c_str(), "r");
 	vector<person> temp;
 	temp = search(fop, treasure);
-	for(int i=0;i<temp.size();i++)
+	for (int i = 0; i < temp.size(); i++)
 		temp[i].print_details();
-	// cout << search(fop, treasure).at(0) << "\n";
+}
+
+int main()
+{
+	fetch_list("sid-tiw", _FIRST_);
 	return 0;
 }
