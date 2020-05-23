@@ -29,6 +29,16 @@ public:
 	person(string, string);
 	void print_details();
 	bool operator==(person &som);
+	bool operator!=(person &som) { return user_name != som.user_name; }
+	bool operator<(const person &som) const { return user_name.compare(som.user_name) < 0; }
+	bool operator>(const person &som) const { return user_name.compare(som.user_name) > 0; }
+	bool operator<=(const person &som) const { return user_name.compare(som.user_name) <= 0; }
+	bool operator>=(const person &som) const { return user_name.compare(som.user_name) >= 0; }
+	string get_name() { return name; }
+	string get_uname() { return user_name; }
+	string get_image() { return image; }
+	string get_about() { return about; }
+	string get_locu() { return loc_univ; }
 };
 
 #endif

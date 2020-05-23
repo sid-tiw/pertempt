@@ -30,8 +30,9 @@ vector<person> parse(FILE *ptr, string srch)
 	return p_list;
 }
 
-void fetch_list(string user_name, string tab, CURL *pnt)
+vector<person> fetch_list(string user_name, string tab, CURL *pnt)
 {
+	vector<person> temp_person;
 	string url_link = "https://github.com/" + user_name + "?tab=" + tab;
 	FILE *fptr = fopen((user_name + "_" + tab + ".txt").c_str(), "w");
 	fstream log("error.log", ios::app);
@@ -47,12 +48,10 @@ void fetch_list(string user_name, string tab, CURL *pnt)
 		string current_time = ctime(&now);
 		log << current_time << " ";
 		log << "failed to fetch " << url_link <<  "\n";
-		return;
+		return temp_person;
 	}
 	log << err;
 	FILE *fop = fopen((user_name + "_" + tab + ".txt").c_str(), "r");
-	vector<person> temp;
-	temp = parse(fop, _treasure_);
-	for (int i = 0; i < temp.size(); i++)
-		temp[i].print_details();
+	temp_person = parse(fop, _treasure_);
+	return temp_person;
 }
