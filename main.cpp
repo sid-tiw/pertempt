@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include <fstream>
 #include <errno.h>
 #include <curl/curl.h>
@@ -162,7 +163,6 @@ vector<person> search(FILE *ptr, string srch)
 
 void fetch_list(string user_name, string tab)
 {
-	curl_global_init(CURL_GLOBAL_ALL);
 	string url_link = "https://github.com/" + user_name + "?tab=" + tab;
 	CURL *pnt = curl_easy_init();
 	FILE *fptr = fopen((user_name + "_" + tab + ".txt").c_str(), "w");
@@ -171,8 +171,16 @@ void fetch_list(string user_name, string tab)
 	curl_easy_setopt(pnt, CURLOPT_WRITEDATA, fptr);
 	curl_easy_setopt(pnt, CURLOPT_HEADER, 1);
 	curl_easy_setopt(pnt, CURLOPT_ERRORBUFFER, err);
-	curl_easy_setopt(pnt, CURLOPT_URL, url_link);
-	curl_easy_perform(pnt);
+	curl_easy_setopt(pnt, CURLOPT_URL, url_link.c_str());
+	CURLcode status = curl_easy_perform(pnt);
+	if(status != 0)
+	{
+		time_t now = time(NULL);
+		string current_time = ctime(&now);
+		log << current_time << " ";
+		log << "failed to fetch " << url_link <<  "\n";
+		return;
+	}
 	log << err;
 	FILE *fop = fopen((user_name + "_" + tab + ".txt").c_str(), "r");
 	vector<person> temp;
@@ -183,6 +191,7 @@ void fetch_list(string user_name, string tab)
 
 int main()
 {
+	curl_global_init(CURL_GLOBAL_ALL);
 	fetch_list("sid-tiw", _FIRST_);
 	return 0;
 }
