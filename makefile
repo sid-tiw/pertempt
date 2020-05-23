@@ -8,3 +8,5 @@ operations.o: operations.cpp operations.h
 			$(CXX) -c operations.cpp -std=c++17
 person.o: person.cpp person.h
 			$(CXX) -c person.cpp -std=c++17
+clean: operations.o main.o person.o
+			rm operations.o main.o person.o
