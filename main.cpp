@@ -14,7 +14,7 @@ using namespace std;
 class person
 {
 private:
-	string name, image, user_name, about, loc_univ, tot_string;
+	string name, user_name, about, loc_univ, tot_string, image;
 	void init()
 	{
 		name = "";
@@ -24,10 +24,16 @@ private:
 		loc_univ = "";
 		tot_string = "";
 	}
-	void allot_img(){}
-	void allot_name(){}
-	void allot_user_name(){}
-	void allot_loc_univ(){}
+	void allot_image()
+	{
+		size_t ind = tot_string.find("src", 0);
+		ind += 5;
+		for (int i = ind; tot_string.at(i) != '\"'; i++)
+			image += tot_string.at(i);
+	}
+	void allot_name() {}
+	void allot_user_name() {}
+	void allot_loc_univ() {}
 
 public:
 	person(FILE *ptr, long int pos)
@@ -58,9 +64,8 @@ public:
 				count--;
 			fseek(ptr, -3, SEEK_CUR);
 			tot_string += temp.at(0);
-			cout << temp.at(0);
 		}
-		allot_img();
+		allot_image();
 		allot_name();
 		allot_user_name();
 		allot_loc_univ();
