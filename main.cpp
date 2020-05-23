@@ -13,6 +13,7 @@ using namespace std;
 
 string treasure = "d-table table-fixed col-12 width-full py-4 border-bottom border-gray-light";
 string nm = "<span class=\"f4 link-gray-dark\">";
+string uname = "<span class=\"link-gray pl-1\">";
 
 class person
 {
@@ -41,7 +42,13 @@ private:
 		for (int i = ind; tot_string.at(i) != '<'; i++)
 			name += tot_string.at(i);
 	}
-	void allot_user_name() {}
+	void allot_user_name()
+	{
+		size_t ind = tot_string.find(uname, 0);
+		ind += uname.size();
+		for (int i = ind; tot_string.at(i) != '<'; i++)
+			user_name += tot_string.at(i);
+	}
 	void allot_loc_univ() {}
 
 public:
