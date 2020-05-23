@@ -29,7 +29,7 @@ int main(int n_o_arg, char *arguments[])
 		pers.insert(pers1[i]);
 	for (int i = 0; i < pers2.size(); i++)
 		pers.insert(pers2[i]);
-	FILE *result = fopen("stlist.imd", "w");
+	FILE *result = fopen("/home/sidtiw/Desktop/stlist.imd", "w");
 	for (auto it : pers)
 	{
 		fprintf(result, "%s\n", it.get_name().c_str());
