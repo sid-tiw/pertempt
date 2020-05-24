@@ -1,3 +1,15 @@
 {
-	"name": "pertempt"
+	"name": "pertempt",
+	"version": "0.0.1",
+	"author": {
+		"name": "Siddhartha Tiwari",
+		"email": "201851127@iiitvadodara.ac.in"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sid-tiw/pertempt"
+	},
+	"private": true,
+	"description": "Pertempto!",
+	"main": "JS/main.js"
 }
