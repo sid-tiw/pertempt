@@ -1,0 +1,59 @@
+body {
+	background-image: url('background_home.jpg');
+	margin-top: 300px;
+}
+
+.sbmt {
+	background-color: rgba(137, 43, 226, 0.562);
+	color: rgba(255, 255, 255, 0.904);
+	width: 190px;
+	height: 40px;
+	border-style: solid;
+	font-weight: 700;
+	font-size: large;
+	border: 0px;
+	outline: none;
+	font-family: 'Prata', serif;
+	letter-spacing: 3px;
+	animation-name: anot;
+	animation-direction: forwards;
+	animation-duration: 800ms;
+}
+
+.inpt, .mid {
+	background-color: transparent;
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	outline: none;
+	border-style: solid;
+	border-bottom-color: rgba(179, 175, 175, 0.384);
+	width: 200px;
+	height: 30px;
+	font-size: medium;
+	font-weight: 500;
+	color: rgba(255, 255, 255, 0.61);
+}
+
+.mid{
+	animation-name: som;
+	animation-delay: 2ms;
+	animation-duration: 800ms;
+	animation-fill-mode: forwards;
+}
+
+@keyframes som{
+	to{
+		border-color: chartreuse;
+	}
+}
+
+.mainInp {
+	margin-left: 10%;
+}
+
+.author {
+	margin-left: 45%;
+	margin-top: 12%;
+	color: white;
+}

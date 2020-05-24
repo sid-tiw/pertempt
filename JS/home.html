@@ -4,16 +4,22 @@
 <head>
 	<meta charset="utf-8">
 	<title>Pertempt</title>
+	<link rel="stylesheet" href="home.css">
+	<link href="https://fonts.googleapis.com/css2?family=Prata&display=swap" rel="stylesheet">
 </head>
 
 <body>
-	<form action="/" method="get" target="_blank">
-		<label for="uname">User Name:</label><br>
-		<input type="text" id="uname" name="uname" value="sid-tiw"><br>
-		<label for="name">Name to search for:</label><br>
-		<input type="text" id="name" name="name" value="Saurabh Kumar"><br><br>
-		<input type="submit" value="Search">
-	</form>
+	<div class="mainInp">
+		<form action="/" method="get">
+			<input class="inpt" type="text" id="uname" name="uname" value="sid-tiw" autocomplete="off" spellcheck="false"><br>
+			<input class="inpt" type="text" id="name" name="name" value="Saurabh Kumar" autocomplete="off" spellcheck="false"><br><br>
+			<input class="sbmt" type="submit" value="Search">
+		</form>
+	</div>
+	<div class="author">
+		<span style="color: rgb(224, 30, 78);font-size: large;">&lt;</span><span style="color: rgb(6, 181, 235);font-size: large;">&gt;</span> by <span style="color: green;font-size: large;">Siddhartha Tiwari</span>
+	</div>
+	<script src="home.js"></script>
 </body>
 
 </html>

@@ -16,26 +16,43 @@
 #define _REPLACE_ 0.1
 #define _ADD_ 0.2
 
-double find_difference(string first, string second) {           //variable lavenshtein distance
-        int m = first.size(), n = second.size();
-        double arr[m + 1][n + 1];
-        for (int i = 0; i <= m; i++)
-                arr[i][0] = i;
-        for (int i = 0; i <= n; i++)
-                arr[0][i] = i;
-        for (int i = 1; i <= m; i++)
-        {
-                for (int j = 1; j <= n; j++)
-                {
-                        double add = arr[i][j - 1] + _ADD_;
-                        double repl = arr[i - 1][j - 1];
-                        if (first.at(i - 1) != second.at(j - 1))
-                                repl += _REPLACE_;
-                        double del = arr[i - 1][j] + _DELETE_;
-                        arr[i][j] = min(min(add, repl), del);
-                }
-        }
-        return arr[m][n];
+double find_difference(string first, string second)
+{ //variable lavenshtein distance
+	int m = first.size(), n = second.size();
+	double arr[m + 1][n + 1];
+	for (int i = 0; i <= m; i++)
+		arr[i][0] = i;
+	for (int i = 0; i <= n; i++)
+		arr[0][i] = i;
+	for (int i = 1; i <= m; i++)
+	{
+		for (int j = 1; j <= n; j++)
+		{
+			double add = arr[i][j - 1] + _ADD_;
+			double repl = arr[i - 1][j - 1];
+			if (first.at(i - 1) != second.at(j - 1))
+				repl += _REPLACE_;
+			double del = arr[i - 1][j] + _DELETE_;
+			arr[i][j] = min(min(add, repl), del);
+		}
+	}
+	return arr[m][n];
+}
+
+double find_diff_index(pair<person, int> A, string search_string)
+{
+	double n_n = find_difference(A.first.get_name(), search_string);
+	double un_n = find_difference(A.first.get_uname(), search_string);
+	double ans = min(n_n, un_n);
+	return ans;
+}
+
+vector<int, person> rank(vector<pair<person, int>> list, string to_search)
+{
+	for (int i = 0; i < list.size(); i++)
+	{
+		
+	}
 }
 
 set<person> get_list(string user_name, CURL *pnt)
