@@ -3,8 +3,8 @@ body {
 	margin-top: 300px;
 }
 
-.sbmt {
-	background-color: rgba(137, 43, 226, 0.562);
+.sbmt, .sbmtAnim {
+	background-color: cadetblue;
 	color: rgba(255, 255, 255, 0.904);
 	width: 190px;
 	height: 40px;
@@ -18,9 +18,31 @@ body {
 	animation-name: anot;
 	animation-direction: forwards;
 	animation-duration: 800ms;
+	margin-left: 5%;
+	border-radius: 25px;
+	cursor: pointer;
 }
 
-.inpt, .mid {
+.mainInp:hover { 
+    outline: none;
+    border-color: #9cb4c7;
+    box-shadow: 0 0 10px #6f7981;
+}
+
+.sbmtAnim{
+	animation-name: sbmtAnim;
+	animation-duration: 800ms;
+	animation-fill-mode: forwards;
+}
+
+@keyframes sbmtAnim{
+	to{
+		background-color: rgba(255, 255, 255, 0.904);
+		color: cadetblue;
+	}
+}
+
+.inpt, .midu, .midn {
 	background-color: transparent;
 	border-top: 0px;
 	border-left: 0px;
@@ -33,9 +55,14 @@ body {
 	font-size: medium;
 	font-weight: 500;
 	color: rgba(255, 255, 255, 0.61);
+	margin-left: 5%;
 }
 
-.mid{
+.up, .midu{
+	margin-top: 15%;
+}
+
+.midu, .midn{
 	animation-name: som;
 	animation-delay: 2ms;
 	animation-duration: 800ms;
@@ -44,16 +71,34 @@ body {
 
 @keyframes som{
 	to{
-		border-color: chartreuse;
+		border-color: rgba(245, 38, 93, 0.918);
 	}
 }
 
 .mainInp {
 	margin-left: 10%;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+	margin-top: -10%;
+	padding-bottom: 5%;
+	margin-right: 50%;
+}
+
+.mainInpParent {
+	display: inline;
 }
 
 .author {
-	margin-left: 45%;
-	margin-top: 12%;
+	bottom: 0%;
+	position: fixed;
+	margin-left: 40%;
+	margin-right: 40%;
 	color: white;
+}
+
+.gitsm{
+	margin-left: 35%;
+	margin-top: -40%;
+	padding-bottom: 120px;
 }
