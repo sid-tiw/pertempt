@@ -3,33 +3,33 @@ let name = document.getElementById("name");
 let sbmt = document.getElementById("sbmt");
 
 name.addEventListener('focusin', () => {
-	name.className = 'midn';
-	if(name.value == "search for")
-		name.value = "";
+    name.className = 'midn';
+    if (name.value == "search for")
+        name.value = "";
 });
 
 uname.addEventListener('focusin', () => {
-	uname.className = 'midu';
-	if(uname.value == "your Username")
-		uname.value = "";
+    uname.className = 'midu';
+    if (uname.value == "your Username")
+        uname.value = "";
 });
 
 uname.addEventListener('focusout', () => {
-	uname.className = "inpt up";
-	if(uname.value.length == 0)
-		uname.value = "your Username";
+    uname.className = "inpt up";
+    if (uname.value.length == 0)
+        uname.value = "your Username";
 });
 
 name.addEventListener('focusout', () => {
-	name.className = "inpt down";
-	if(name.value.length == 0)
-		name.value = "search for";
+    name.className = "inpt down";
+    if (name.value.length == 0)
+        name.value = "search for";
 });
 
-sbmt.addEventListener('mouseenter', ()=>{
-	sbmt.className = "sbmtAnim";
+sbmt.addEventListener('mouseenter', () => {
+    sbmt.className = "sbmtAnim";
 });
 
-sbmt.addEventListener('mouseleave', ()=>{
-	sbmt.className = "sbmt";
+sbmt.addEventListener('mouseleave', () => {
+    sbmt.className = "sbmt";
 });

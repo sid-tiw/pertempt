@@ -45,6 +45,7 @@ body {
 	font-weight: 500;
 	color: rgba(255, 255, 255, 0.61);
 	margin-left: 15%;
+	margin-right: 5%;
 }
 
 .up, .midu{
@@ -103,23 +104,6 @@ body {
 	width: 95px;
 }
 
-/*
-.mainInp:hover { 
-    outline: none;
-    border-color: #9cb4c7;
-    box-shadow: 0 0 10px #6f7981;
-}
-
-.mainInp {
-	margin-left: 10%;
-	border-width: 1px;
-	border-color: black;
-	border-style: solid;
-	margin-top: -10%;
-	padding-bottom: 5%;
-	margin-right: 50%;
-}
-
 .author {
 	bottom: 0%;
 	position: fixed;
@@ -128,9 +112,10 @@ body {
 	color: white;
 }
 
-.gitsm{
-	margin-left: 35%;
-	margin-top: -40%;
-	padding-bottom: 120px;
-	width: 95px;
-} */
+.githb{
+	margin-left: 15%;
+}
+
+.linkdin{
+	margin-left: 15%;
+}
