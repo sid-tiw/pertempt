@@ -19,7 +19,7 @@ body {
 	animation-direction: forwards;
 	animation-duration: 800ms;
 	margin-left: 5%;
-	border-radius: 25px;
+	border-radius: 15px;
 	cursor: pointer;
 }
 
@@ -39,6 +39,9 @@ body {
 	to{
 		background-color: rgba(255, 255, 255, 0.904);
 		color: cadetblue;
+		outline: none;
+    	border-color: #9cb4c7;
+    	box-shadow: 0 0 10px #0080ff;
 	}
 }
 
@@ -101,4 +104,9 @@ body {
 	margin-left: 35%;
 	margin-top: -40%;
 	padding-bottom: 120px;
+	width: 95px;
+}
+
+.header{
+	visibility: hidden;
 }
