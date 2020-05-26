@@ -1,9 +1,17 @@
 body {
 	background-image: url('background_home.jpg');
-	margin-top: 300px;
+	background-repeat: no-repeat;
 }
 
-.sbmt, .sbmtAnim {
+.header{
+	margin-left: 10%;
+	margin-top: 5%;
+	font-size: 290%;
+	font-family: 'Josefin Sans', sans-serif;
+	color: cadetblue;
+}
+
+/* .sbmt, .sbmtAnim {
 	background-color: cadetblue;
 	color: rgba(255, 255, 255, 0.904);
 	width: 190px;
@@ -105,8 +113,4 @@ body {
 	margin-top: -40%;
 	padding-bottom: 120px;
 	width: 95px;
-}
-
-.header{
-	visibility: hidden;
-}
+} */
