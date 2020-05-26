@@ -13,11 +13,11 @@ body {
 
 .mainBox {
 	margin-top: 5%;
-	margin-left: 7%;
+	margin-left: 10%;
 	border-width: 1px;
 	border-color: black;
 	border-style: solid;
-	width: 40%;
+	width: 30%;
 }
 
 .mainBox:hover{
@@ -28,52 +28,7 @@ body {
 
 .mainInp{
 	display: inline-block;
-}
-
-.gitsm{
-	display: inline-block;
-}
-
-/* .sbmt, .sbmtAnim {
-	background-color: cadetblue;
-	color: rgba(255, 255, 255, 0.904);
-	width: 190px;
-	height: 40px;
-	border-style: solid;
-	font-weight: 700;
-	font-size: large;
-	border: 0px;
-	outline: none;
-	font-family: 'Prata', serif;
-	letter-spacing: 3px;
-	animation-name: anot;
-	animation-direction: forwards;
-	animation-duration: 800ms;
-	margin-left: 5%;
-	border-radius: 15px;
-	cursor: pointer;
-}
-
-.mainInp:hover { 
-    outline: none;
-    border-color: #9cb4c7;
-    box-shadow: 0 0 10px #6f7981;
-}
-
-.sbmtAnim{
-	animation-name: sbmtAnim;
-	animation-duration: 800ms;
-	animation-fill-mode: forwards;
-}
-
-@keyframes sbmtAnim{
-	to{
-		background-color: rgba(255, 255, 255, 0.904);
-		color: cadetblue;
-		outline: none;
-    	border-color: #9cb4c7;
-    	box-shadow: 0 0 10px #0080ff;
-	}
+	padding-bottom: 20%;
 }
 
 .inpt, .midu, .midn {
@@ -89,24 +44,70 @@ body {
 	font-size: medium;
 	font-weight: 500;
 	color: rgba(255, 255, 255, 0.61);
-	margin-left: 5%;
+	margin-left: 15%;
 }
 
 .up, .midu{
-	margin-top: 15%;
+	margin-top: 40%;
 }
 
 .midu, .midn{
-	animation-name: som;
+	animation-name: inpAnim;
 	animation-delay: 2ms;
 	animation-duration: 800ms;
 	animation-fill-mode: forwards;
 }
 
-@keyframes som{
+@keyframes inpAnim{
 	to{
 		border-color: rgba(245, 38, 93, 0.918);
 	}
+}
+
+.sbmt, .sbmtAnim {
+	background-color: rgb(12, 64, 238);
+	color: rgba(255, 255, 255, 0.904);
+	width: 200px;
+	height: 40px;
+	border-style: solid;
+	font-weight: 700;
+	font-size: large;
+	border: 0px;
+	outline: none;
+	font-family: 'Prata', serif;
+	letter-spacing: 3px;
+	animation-name: anot;
+	animation-direction: forwards;
+	animation-duration: 800ms;
+	margin-left: 15%;
+	border-radius: 15px;
+	cursor: pointer;
+}
+
+.sbmtAnim{
+	animation-name: sbmtAnim;
+	animation-duration: 800ms;
+	animation-fill-mode: forwards;
+}
+
+@keyframes sbmtAnim{
+	to{
+		background-color: rgba(255, 255, 255, 0.904);
+		color: rgb(12, 64, 238);
+	}
+}
+
+.gitsm{
+	display: inline-block;
+	margin-left: 10%;
+	width: 95px;
+}
+
+/*
+.mainInp:hover { 
+    outline: none;
+    border-color: #9cb4c7;
+    box-shadow: 0 0 10px #6f7981;
 }
 
 .mainInp {

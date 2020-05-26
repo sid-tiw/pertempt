@@ -1,36 +1,35 @@
-// let uname = document.getElementById("uname");
-// let name = document.getElementById("name");
-// let sbmt = document.getElementById("sbmt");
+let uname = document.getElementById("uname");
+let name = document.getElementById("name");
+let sbmt = document.getElementById("sbmt");
 
-// sbmt.addEventListener('mouseenter', ()=>{
-// 	sbmt.className = "sbmtAnim";
-// });
+name.addEventListener('focusin', () => {
+	name.className = 'midn';
+	if(name.value == "search for")
+		name.value = "";
+});
 
-// sbmt.addEventListener('mouseleave', ()=>{
-// 	sbmt.className = "sbmt";
-// });
+uname.addEventListener('focusin', () => {
+	uname.className = 'midu';
+	if(uname.value == "your Username")
+		uname.value = "";
+});
 
-// name.addEventListener('focusin', () => {
-// 	name.className = 'midn';
-// 	if(name.value == "search for")
-// 		name.value = "";
-// });
+uname.addEventListener('focusout', () => {
+	uname.className = "inpt up";
+	if(uname.value.length == 0)
+		uname.value = "your Username";
+});
 
-// uname.addEventListener('focusin', () => {
-// 	uname.className = 'midu';
-// 	if(uname.value == "your Username")
-// 		uname.value = "";
-// });
+name.addEventListener('focusout', () => {
+	name.className = "inpt down";
+	if(name.value.length == 0)
+		name.value = "search for";
+});
 
-// uname.addEventListener('focusout', () => {
-// 	uname.className = "inpt up";
-// 	if(uname.value.length == 0)
-// 		uname.value = "your Username";
-// });
+sbmt.addEventListener('mouseenter', ()=>{
+	sbmt.className = "sbmtAnim";
+});
 
-// name.addEventListener('focusout', () => {
-// 	name.className = "inpt down";
-// 	if(name.value.length == 0)
-// 		name.value = "search for";
-// });
-
+sbmt.addEventListener('mouseleave', ()=>{
+	sbmt.className = "sbmt";
+});
