@@ -7,3 +7,4 @@ pertempt
 *.class
 *.exe
 *.obj
+c_cpp_properties.json
