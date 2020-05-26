@@ -11,6 +11,29 @@ body {
 	color: cadetblue;
 }
 
+.mainBox {
+	margin-top: 5%;
+	margin-left: 7%;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+	width: 40%;
+}
+
+.mainBox:hover{
+	outline: none;
+    border-color: #9cb4c7;
+    box-shadow: 0 0 10px #6f7981;
+}
+
+.mainInp{
+	display: inline-block;
+}
+
+.gitsm{
+	display: inline-block;
+}
+
 /* .sbmt, .sbmtAnim {
 	background-color: cadetblue;
 	color: rgba(255, 255, 255, 0.904);
@@ -94,10 +117,6 @@ body {
 	margin-top: -10%;
 	padding-bottom: 5%;
 	margin-right: 50%;
-}
-
-.mainInpParent {
-	display: inline;
 }
 
 .author {
