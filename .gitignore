@@ -5,3 +5,5 @@
 pertempt
 *.imd
 *.class
+*.exe
+*.obj
