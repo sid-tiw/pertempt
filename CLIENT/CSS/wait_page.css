@@ -1,0 +1,35 @@
+body {
+	background-image: url('../images/background_home.jpg');
+	background-repeat: no-repeat;
+}
+
+.header{
+	margin-left: 10%;
+	margin-top: 5%;
+	font-size: 290%;
+	font-family: 'Josefin Sans', sans-serif;
+	color: cadetblue;
+}
+
+.progress{
+    width: 30%;
+    margin-top: 5%;
+    margin-left: 10%;
+    border: solid black 1px;
+}
+
+.author {
+	bottom: 0%;
+	position: fixed;
+	margin-left: 40%;
+	margin-right: 40%;
+	color: white;
+}
+
+.githb{
+	margin-left: 15%;
+}
+
+.linkdin{
+	margin-left: 15%;
+}
