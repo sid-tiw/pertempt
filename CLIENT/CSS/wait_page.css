@@ -12,10 +12,9 @@ body {
 }
 
 .progress{
-    width: 30%;
+	width: 300px;
     margin-top: 5%;
     margin-left: 10%;
-    border: solid black 1px;
 }
 
 .author {

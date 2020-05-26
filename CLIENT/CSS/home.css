@@ -101,7 +101,10 @@ body {
 .gitsm{
 	display: inline-block;
 	margin-left: 10%;
-	width: 95px;
+	margin-right: 10%;
+	margin-top: 2%;
+	margin-bottom: 2%;
+	width: 20%;
 }
 
 .author {
