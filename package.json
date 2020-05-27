@@ -11,5 +11,8 @@
 	},
 	"private": true,
 	"description": "Pertempto!",
-	"main": "JS/main.js"
+	"main": "JS/main.js",
+	"dependencies": {
+		"node-static": "^0.7.11"
+	}
 }
