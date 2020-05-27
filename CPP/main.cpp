@@ -10,7 +10,18 @@
 #include "person.h"
 #include "operations.h"
 #ifdef WIN32
-#include <unistd.h>
+#include <io.h>
+#define CURL_STATICLIB
+#ifdef _DEBUG
+#pragma comment(lib, "C:/CURL/libcurl_a_debug.lib")
+#else
+#pragma comment(lib, "C:/CURL/libcurl_a.lib")
+#endif
+#pragma comment(lib, "Normaliz.lib")
+#pragma comment(lib, "Ws2_32.lib")
+#pragma comment(lib, "Wldap32.lib")
+#pragma comment(lib, "Crypt32.lib")
+#pragma comment(lib, "advapi32.lib")
 #endif
 #define MAX_LEVEL 2
 #define _DELETE_ 0.2
@@ -22,8 +33,10 @@
 
 double find_difference(string first, string second)
 { //variable lavenshtein distance
-	int m = first.size(), n = second.size();
-	double arr[m + 1][n + 1];
+	const int m = first.size(), n = second.size();
+	double **arr = new double *[m + 1];
+	for (int i = 0; i <= m; i++)
+		arr[i] = new double[n + 1];
 	for (int i = 0; i <= m; i++)
 		arr[i][0] = i;
 	for (int i = 0; i <= n; i++)
@@ -57,7 +70,7 @@ vector<pair<person, int>> rank(vector<pair<person, int>> list, string to_search)
 	vector<pair<pair<pair<double, double>, double>, person>> arr;
 	vector<pair<int, person>> temp1;
 	vector<pair<double, person>> temp2;
-	vector<pair<person, int>> arr1, arr2;
+	vector<pair<person, double>> arr1, arr2;
 	for (int i = 0; i < list.size(); i++)
 	{
 		temp1.push_back(make_pair(list[i].second, list[i].first));
@@ -65,7 +78,8 @@ vector<pair<person, int>> rank(vector<pair<person, int>> list, string to_search)
 	}
 	sort(temp1.begin(), temp1.end());
 	sort(temp2.begin(), temp2.end());
-	int ranks1[temp1.size()], ranks2[temp2.size()];
+	int *ranks1 = new int[temp1.size()];
+	int *ranks2 = new int[temp2.size()];
 	ranks1[0] = 1;
 	ranks2[0] = 1;
 	for (int i = 1; i < temp1.size(); i++)
