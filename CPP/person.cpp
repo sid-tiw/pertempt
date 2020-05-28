@@ -1,3 +1,11 @@
+/**
+ * @file person.h
+ * @author Siddhartha Tiwari (201851127@iiitvadodara.ac.in)
+ * @brief contains the definition of the person class's ember functions.
+ * @version 0.1
+ * @date 2020-05-28
+ */
+
 #include "person.h"
 
 void person::init()

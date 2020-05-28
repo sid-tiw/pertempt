@@ -1,3 +1,11 @@
+/**
+ * @file operations.cpp
+ * @author Siddhartha Tiwari (201851127@iiitvadodara.ac.in)
+ * @brief defining operations related to curl
+ * @version 0.1
+ * @date 2020-05-28
+ */
+
 #include "operations.h"
 #include <curl/curl.h>
 #include <stdlib.h>

@@ -1,9 +1,21 @@
+/**
+ * @file person.h
+ * @author Siddhartha Tiwari (201851127@iiitvadodara.ac.in)
+ * @brief contains the person class declaration.
+ * @version 0.1
+ * @date 2020-05-28
+ */
+
 #ifndef __PERSON__
 #define __PERSON__
 
 #include <string>
 #include <iostream>
 #ifndef _treasure_
+/**
+ * @brief the string used to parse out an user of the github page.
+ * 
+ */
 #define _treasure_ string("d-table table-fixed col-12 width-full py-4 border-bottom border-gray-light")
 #endif
 #ifndef _name_
@@ -12,6 +24,10 @@
 
 using namespace std;
 
+/**
+ * @brief The person class. Defines all attributes of a github user.
+ * 
+ */
 class person
 {
 private:
@@ -25,6 +41,12 @@ private:
 	string remove_trailing_spaces(string);
 
 public:
+	/**
+	 * @brief Construct a new person object. Parse the user's detail from the file
+	 *
+	 * @param file_ptr :::: the file pointer from which to read.
+	 * @param pos :::: the position from which to read
+	 */
 	person(FILE *, long int);
 	person(string, string);
 	void print_details();
