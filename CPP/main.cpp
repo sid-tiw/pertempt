@@ -1,3 +1,10 @@
+/**
+ * @file main.cpp
+ * @author Siddhartha Tiwari (201851127@iiitvadodara.ac.in)
+ * @brief entry point of the pertempt application
+ * @version 0.1
+ * @date 2020-05-28
+ */
 #define CURL_STATICLIB
 #include <iostream>
 #include <ctime>
@@ -27,14 +34,49 @@
 #pragma comment(lib, "Crypt32.lib")
 #pragma comment(lib, "advapi32.lib")
 #endif
+/**
+ * @brief The maximum depth to search for in the network tree
+ * 
+ */
 #define MAX_LEVEL 2
+/**
+ * @brief The cost of deletion for calculating the levenshtein's distance
+ * 
+ */
 #define _DELETE_ 0.2
+/**
+ * @brief The cost of replacement for calculating the levenshtein's distance
+ * 
+ */
 #define _REPLACE_ 0.1
+/**
+ * @brief The cost of addition for calculating the levenshtein's distance
+ * 
+ */
 #define _ADD_ 0.2
+/**
+ * @brief The weight given to the first property(in reference to rankings).
+ * 
+ */
 #define _FIRSTPR_ 30
+/**
+ * @brief The weight given to the second property(in reference to rankings).
+ * 
+ */
 #define _SECONDPR_ 30
+/**
+ * @brief calculates the rank according to the weights given to both the arguments
+ * 
+ */
 #define calc_rank(first, second) first *_FIRSTPR_ + second *_SECONDPR_
 
+/**
+ * @brief finds the levenshtein's distance between two strings
+ * 
+ * @param first :::: the first string
+ * @param second :::: the second string
+ * @return double :::: levenshtein's distance between the two strings.
+ */
 double find_difference(string first, string second)
 { //variable lavenshtein distance
 	const int m = first.size(), n = second.size();
@@ -60,19 +102,36 @@ double find_difference(string first, string second)
 	return arr[m][n];
 }
 
-double find_diff_index(pair<person, int> A, string search_string)
+/**
+ * @brief finds the minimum of the levenshtein's distances from the target to the person's name and username.
+ * 
+ * @param indiv :::: pair containing the person object and its depth.
+ * @param search_string :::: the target string
+ * @return double :::: the minimum of the lavenshtein's distances
+ */
+double find_diff_index(pair<person, int> indiv, string search_string)
 {
-	double n_n = find_difference(A.first.get_name(), search_string);
-	double un_n = find_difference(A.first.get_uname(), search_string);
+	double n_n = find_difference(indiv.first.get_name(), search_string);
+	double un_n = find_difference(indiv.first.get_uname(), search_string);
 	double ans = min(n_n, un_n);
 	return ans;
 }
 
-vector<pair<person, int>> rank(vector<pair<person, int>> list, string to_search)
+/**
+ * @brief ranks persons according to their levenshtein distance
+ * from the target and their depth in the relation tree.
+ * 
+ * @param list :::: list of the persons and their depth in a vector of pairs 
+ * 
+ * @param to_search :::: the target to search
+ * 
+ * @return vector<pair<person, int>> :::: The persons ranked according to the criteria given above and their depth.
+ */
+vector<pair<person, int>> rank_persons(vector<pair<person, int>> list, string to_search)
 {
-	sort(list.begin(), list.end());
-	vector<pair<pair<pair<double, double>, double>, person>> arr;
-	vector<pair<int, person>> temp1;
+	sort(list.begin(), list.end());								  //Sort the list personwise, i.e the person with lexicographically smallest user name would be first after sorting.
+	vector<pair<pair<pair<double, double>, double>, person>> arr; //The main ranking array. The first
+	vector<pair<int, person>> temp1;							  //It will store the reverse of the corresponding pairs of the list array.
 	vector<pair<double, person>> temp2;
 	vector<pair<person, double>> arr1, arr2;
 	for (int i = 0; i < list.size(); i++)
@@ -102,13 +161,21 @@ vector<pair<person, int>> rank(vector<pair<person, int>> list, string to_search)
 	sort(arr1.begin(), arr1.end());
 	sort(arr2.begin(), arr2.end());
 	for (int i = 0; i < temp1.size(); i++)
-		arr.push_back(make_pair(make_pair(make_pair(calc_rank(arr1[i].second, arr2[i].second), list[i].second), temp2[i].first), arr1[i].first));
+		arr.push_back(make_pair(make_pair(make_pair(calc_rank(arr1[i].second, arr2[i].second), temp2[i].first), list[i].second), arr1[i].first));
 	vector<pair<person, int>> to_return;
 	for (int i = 0; i < arr.size(); i++)
 		to_return.push_back(make_pair(arr[i].second, list[i].second));
 	return to_return;
 }
 
+/**
+ * @brief Get the list of all followers and following of the user_name.
+ * 
+ * @param user_name :::: the user name of the person
+ * @param pnt :::: the pointer returned by the global curl initializer.
+ * @return pair<set<person>, int> :::: the pair containing the list of persons as the 
+ * first value in the pair and the status code as the second.
+ */
 pair<set<person>, int> get_list(string user_name, CURL *pnt)
 {
 	pair<vector<person>, CURLcode> pers1, pers2;
@@ -171,8 +238,6 @@ int main(int n_o_arg, char *arguments[])
 		driver = temp_driver;
 		cout << "Done level" << i << "\n";
 	}
-	for (int i = 0; i < master.size(); i++)
-		master[i].first.print_details();
 	system((__DELETE + " *.txt").c_str());
 	return 0;
 }
