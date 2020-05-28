@@ -13,6 +13,7 @@
 	"description": "Pertempto!",
 	"main": "JS/main.js",
 	"dependencies": {
+		"child_process": "^1.0.2",
 		"node-static": "^0.7.11"
 	}
 }
