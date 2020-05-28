@@ -10,6 +10,6 @@
 #define _SECOND_ "following"
 
 vector<person> parse(FILE*, string);
-vector<person> fetch_list(string, string, CURL*);
+pair<vector<person>, CURLcode> fetch_list(string, string, CURL*);
 
 #endif

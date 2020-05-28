@@ -30,7 +30,7 @@ vector<person> parse(FILE *ptr, string srch)
 	return p_list;
 }
 
-vector<person> fetch_list(string user_name, string tab, CURL *pnt)
+pair<vector<person>, CURLcode> fetch_list(string user_name, string tab, CURL *pnt)
 {
 	vector<person> temp_person;
 	string url_link = "https://github.com/" + user_name + "?tab=" + tab;
@@ -38,8 +38,9 @@ vector<person> fetch_list(string user_name, string tab, CURL *pnt)
 	fstream log("error.log", ios::app);
 	char err[MAX_SIZE];
 	curl_easy_setopt(pnt, CURLOPT_WRITEDATA, fptr);
-	curl_easy_setopt(pnt, CURLOPT_HEADER, 1);
+	curl_easy_setopt(pnt, CURLOPT_HEADER, 0);
 	curl_easy_setopt(pnt, CURLOPT_ERRORBUFFER, err);
+	curl_easy_setopt(pnt, CURLOPT_FAILONERROR, 1);
 	curl_easy_setopt(pnt, CURLOPT_URL, url_link.c_str());
 	CURLcode status = curl_easy_perform(pnt);
 	if(status != 0)
@@ -48,10 +49,10 @@ vector<person> fetch_list(string user_name, string tab, CURL *pnt)
 		string current_time = ctime(&now);
 		log << current_time << " ";
 		log << "failed to fetch " << url_link <<  "\n";
-		return temp_person;
+		return make_pair(temp_person, status);
 	}
 	log << err;
 	FILE *fop = fopen((user_name + "_" + tab + ".txt").c_str(), "r");
 	temp_person = parse(fop, _treasure_);
-	return temp_person;
+	return make_pair(temp_person, status);
 }

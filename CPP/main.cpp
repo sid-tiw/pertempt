@@ -1,3 +1,4 @@
+#define CURL_STATICLIB
 #include <iostream>
 #include <ctime>
 #include <algorithm>
@@ -9,7 +10,10 @@
 #include <stack>
 #include "person.h"
 #include "operations.h"
+#define __DELETE string("rm")
 #ifdef WIN32
+#undef __DELETE
+#define __DELETE string("del")
 #include <io.h>
 #define CURL_STATICLIB
 #ifdef _DEBUG
@@ -105,17 +109,17 @@ vector<pair<person, int>> rank(vector<pair<person, int>> list, string to_search)
 	return to_return;
 }
 
-set<person> get_list(string user_name, CURL *pnt)
+pair<set<person>, int> get_list(string user_name, CURL *pnt)
 {
-	vector<person> pers1, pers2;
+	pair<vector<person>, CURLcode> pers1, pers2;
 	pers1 = fetch_list(user_name, _FIRST_, pnt);
 	pers2 = fetch_list(user_name, _SECOND_, pnt);
 	set<person> pers;
-	for (int i = 0; i < pers1.size(); i++)
-		pers.insert(pers1[i]);
-	for (int i = 0; i < pers2.size(); i++)
-		pers.insert(pers2[i]);
-	return pers;
+	for (int i = 0; i < pers1.first.size(); i++)
+		pers.insert(pers1.first[i]);
+	for (int i = 0; i < pers2.first.size(); i++)
+		pers.insert(pers2.first[i]);
+	return make_pair(pers, (!pers1.second) && (!pers2.second));
 }
 
 int main(int n_o_arg, char *arguments[])
@@ -133,7 +137,13 @@ int main(int n_o_arg, char *arguments[])
 	stack<pair<person, int>> driver, temp_driver;
 	set<person> level[MAX_LEVEL];
 	set<person> status;
-	level[0] = get_list(user_name, pnt);
+	pair<set<person>, int> check_error_first = get_list(user_name, pnt);
+	if (check_error_first.second != 1)
+	{
+		fprintf(stderr, "some error occured. Exiting!!\n");
+		return 0;
+	}
+	level[0] = check_error_first.first;
 	for (auto &it : level[0])
 	{
 		driver.push(make_pair(it, 1));
@@ -149,7 +159,7 @@ int main(int n_o_arg, char *arguments[])
 				driver.pop();
 				continue;
 			}
-			level[i - 1] = get_list(driver.top().first.get_uname(), pnt);
+			level[i - 1] = get_list(driver.top().first.get_uname(), pnt).first;
 			for (auto &it : level[i - 1])
 			{
 				temp_driver.push(make_pair(it, i));
@@ -163,6 +173,6 @@ int main(int n_o_arg, char *arguments[])
 	}
 	for (int i = 0; i < master.size(); i++)
 		master[i].first.print_details();
-	system("rm *.txt");
+	system((__DELETE + " *.txt").c_str());
 	return 0;
 }
