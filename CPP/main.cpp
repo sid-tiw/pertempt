@@ -173,9 +173,9 @@ double find_diff_index(pair<person, int> indiv, string search_string)
  */
 vector<pair<person, int>> rank_persons(vector<pair<person, int>> list, string to_search)
 {
-	sort(list.begin(), list.end());								  //Sort the list personwise, i.e the person with lexicographically smallest user name would be first after sorting.
-	vector<pair<pair<pair<double, double>, double>, person>> arr; //The main ranking array. The first
-	vector<pair<int, person>> temp1;							  //It will store the reverse of the corresponding pairs of the list array.
+	sort(list.begin(), list.end());												//Sort the list personwise, i.e the person with lexicographically smallest user name would be first after sorting.
+	vector<pair<pair<pair<pair<double, double>, double>, double>, person>> arr; //The main ranking array. The first
+	vector<pair<int, person>> temp1;											//It will store the reverse of the corresponding pairs of the list array.
 	vector<pair<double, person>> temp2;
 	vector<pair<person, double>> arr1, arr2;
 	for (int i = 0; i < list.size(); i++)
@@ -189,6 +189,8 @@ vector<pair<person, int>> rank_persons(vector<pair<person, int>> list, string to
 	int *ranks2 = new int[temp2.size()];
 	ranks1[0] = 1;
 	ranks2[0] = 1;
+	arr1.push_back(make_pair(temp1[0].second, (double)ranks1[0]));
+	arr2.push_back(make_pair(temp2[0].second, (double)ranks2[0]));
 	for (int i = 1; i < temp1.size(); i++)
 	{
 		if (temp1[i].first == temp1[i - 1].first)
@@ -205,7 +207,10 @@ vector<pair<person, int>> rank_persons(vector<pair<person, int>> list, string to
 	sort(arr1.begin(), arr1.end());
 	sort(arr2.begin(), arr2.end());
 	for (int i = 0; i < arr1.size(); i++)
-		arr.push_back(make_pair(make_pair(make_pair(calc_rank(arr1[i].second, arr2[i].second), temp2[i].first), list[i].second), arr1[i].first));
+	{
+		double temp_rank_variable = (1.0 / (double)max(arr1[i].first.get_name().size(), arr1[i].first.get_uname().size()));
+		arr.push_back(make_pair(make_pair(make_pair(make_pair(calc_rank(arr1[i].second, arr2[i].second), temp2[i].first), list[i].second), temp_rank_variable), arr1[i].first));
+	}
 	sort(arr.begin(), arr.end());
 	vector<pair<person, double>> temp_arr;
 	for (int i = 0; i < arr.size(); i++)
@@ -300,11 +305,10 @@ int main(int n_o_arg, char *arguments[])
 		cout << "Done level" << i << "\n";
 	}
 	cout << "Done\n\n";
-	// for (int i = 0; i < master.size(); i++)
-	// 	master[i].first.print_details();
 	vector<pair<person, int>> result = rank_persons(master, to_search);
-	for (int i = 0; i < 1; i++)
-		cout << result[i].first.get_uname().size() << "\n";
+	/*
+	Rank obtained. Do what is required here now.
+	*/
 	system((__DELETE + " *.txt").c_str());
 	return 0;
 }
