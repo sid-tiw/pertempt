@@ -15,8 +15,11 @@ IF EXIST *.log (
 IF EXIST *.exe (
     Set condition=1
 )
+IF EXIST *.obj (
+    Set condition=1
+)
 IF %condition% EQU 1 (
-    del *.txt *.log *.exe /f /q
+    del *.txt *.log *.exe *.obj /f /q
 )
 
 cd ..
