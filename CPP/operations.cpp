@@ -77,5 +77,8 @@ pair<vector<person>, CURLcode> fetch_list(string user_name, string tab, CURL *pn
 	log << err;
 	FILE *fop = fopen((user_name + "_" + tab + ".txt").c_str(), "r");
 	temp_person = parse(fop, _treasure_);
+	fclose(fop);
+	log.close();
+	fclose(fptr);
 	return make_pair(temp_person, status);
 }

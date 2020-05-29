@@ -38,7 +38,7 @@
  * @brief The maximum depth to search for in the network tree
  * 
  */
-#define MAX_LEVEL 2
+#define MAX_LEVEL 1
 /**
  * @brief The cost of deletion for calculating the levenshtein's distance
  * 
@@ -48,7 +48,7 @@
  * @brief The cost of replacement for calculating the levenshtein's distance
  * 
  */
-#define _REPLACE_ 0.1
+#define _REPLACE_ 0.2
 /**
  * @brief The cost of addition for calculating the levenshtein's distance
  * 
@@ -63,7 +63,7 @@
  * @brief The weight given to the second property(in reference to rankings).
  * 
  */
-#define _SECONDPR_ 30
+#define _SECONDPR_ 100
 /**
  * @brief calculates the rank according to the weights given to both the arguments
  * 
@@ -79,6 +79,8 @@
  */
 double find_difference(string first, string second)
 { //variable lavenshtein distance
+	if (first.size() < 1 || second.size() < 1)
+		return (double)LONG_MAX;
 	const int m = first.size(), n = second.size();
 	double **arr = new double *[m + 1];
 	for (int i = 0; i <= m; i++)
@@ -103,6 +105,31 @@ double find_difference(string first, string second)
 }
 
 /**
+ * @brief Split the given target, when a space is encountered.
+ * 
+ * @param target :::: the target string, which to split
+ * @return vector<string> :::: A list of strings split on spaces.
+ */
+vector<string> split_on_spaces(string target)
+{
+	vector<string> to_return;
+	if (target.size() == 0)
+		return to_return;
+	int pre_ind = 0;
+	for (int i = 0; i < target.size(); i++)
+	{
+		if (target[i] == ' ')
+		{
+			to_return.push_back(target.substr(pre_ind, i - pre_ind));
+			pre_ind = i + 1;
+		}
+	}
+	if (pre_ind < target.size())
+		to_return.push_back(target.substr(pre_ind));
+	return to_return;
+}
+
+/**
  * @brief finds the minimum of the levenshtein's distances from the target to the person's name and username.
  * 
  * @param indiv :::: pair containing the person object and its depth.
@@ -111,9 +138,26 @@ double find_difference(string first, string second)
  */
 double find_diff_index(pair<person, int> indiv, string search_string)
 {
+	vector<string> temp1 = split_on_spaces(indiv.first.get_name());
+	vector<string> temp2 = split_on_spaces(indiv.first.get_uname());
+	vector<string> temp3 = split_on_spaces(search_string);
 	double n_n = find_difference(indiv.first.get_name(), search_string);
 	double un_n = find_difference(indiv.first.get_uname(), search_string);
-	double ans = min(n_n, un_n);
+	double ans = min(un_n, n_n);
+	for (int i = 0; i < temp1.size(); i++)
+		for (int j = 0; j < temp3.size(); j++)
+		{
+			double temp = find_difference(temp1[i], temp3[j]);
+			if (temp < ans)
+				ans = temp;
+		}
+	for (int i = 0; i < temp2.size(); i++)
+		for (int j = 0; j < temp3.size(); j++)
+		{
+			double temp = find_difference(temp2[i], temp3[j]);
+			if (temp < ans)
+				ans = temp;
+		}
 	return ans;
 }
 
@@ -160,8 +204,13 @@ vector<pair<person, int>> rank_persons(vector<pair<person, int>> list, string to
 	}
 	sort(arr1.begin(), arr1.end());
 	sort(arr2.begin(), arr2.end());
-	for (int i = 0; i < temp1.size(); i++)
+	for (int i = 0; i < arr1.size(); i++)
 		arr.push_back(make_pair(make_pair(make_pair(calc_rank(arr1[i].second, arr2[i].second), temp2[i].first), list[i].second), arr1[i].first));
+	sort(arr.begin(), arr.end());
+	vector<pair<person, double>> temp_arr;
+	for (int i = 0; i < arr.size(); i++)
+		temp_arr.push_back(make_pair(arr[i].second, (double)i));
+	sort(temp_arr.begin(), temp_arr.end());
 	vector<pair<person, int>> to_return;
 	for (int i = 0; i < arr.size(); i++)
 		to_return.push_back(make_pair(arr[i].second, list[i].second));
@@ -203,7 +252,7 @@ int main(int n_o_arg, char *arguments[])
 	vector<pair<person, int>> master;
 	stack<pair<person, int>> driver, temp_driver;
 	set<person> level[MAX_LEVEL];
-	set<person> status;
+	set<person> status, person_status;
 	pair<set<person>, int> check_error_first = get_list(user_name, pnt);
 	if (check_error_first.second != 1)
 	{
@@ -213,8 +262,12 @@ int main(int n_o_arg, char *arguments[])
 	level[0] = check_error_first.first;
 	for (auto &it : level[0])
 	{
-		driver.push(make_pair(it, 1));
-		master.push_back(make_pair(it, 1));
+		person temp_person_object = it;
+		if (temp_person_object.get_uname().size() >= 1)
+		{
+			driver.push(make_pair(it, 1));
+			master.push_back(make_pair(it, 1));
+		}
 	}
 	cout << "Done level1\n";
 	for (int i = 2; i <= MAX_LEVEL; i++)
@@ -229,8 +282,16 @@ int main(int n_o_arg, char *arguments[])
 			level[i - 1] = get_list(driver.top().first.get_uname(), pnt).first;
 			for (auto &it : level[i - 1])
 			{
-				temp_driver.push(make_pair(it, i));
-				master.push_back(make_pair(it, i));
+				if (person_status.find(it) == person_status.end())
+				{
+					person temp_person_object = it;
+					if (temp_person_object.get_uname().size() >= 1)
+					{
+						master.push_back(make_pair(it, i));
+						temp_driver.push(make_pair(it, i));
+						person_status.insert(it);
+					}
+				}
 			}
 			status.insert(driver.top().first);
 			driver.pop();
@@ -238,6 +299,12 @@ int main(int n_o_arg, char *arguments[])
 		driver = temp_driver;
 		cout << "Done level" << i << "\n";
 	}
+	cout << "Done\n\n";
+	// for (int i = 0; i < master.size(); i++)
+	// 	master[i].first.print_details();
+	vector<pair<person, int>> result = rank_persons(master, to_search);
+	for (int i = 0; i < 1; i++)
+		cout << result[i].first.get_uname().size() << "\n";
 	system((__DELETE + " *.txt").c_str());
 	return 0;
 }
