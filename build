@@ -1,0 +1,17 @@
+#!/bin/bash
+# This is a BASH file for three simple tasks. You can do it manually too.
+# The first task is to build the files in the CPP directory.
+echo cd CPP
+cd CPP
+echo make
+make
+echo make clean
+make clean
+# The second is to move the executable to SERVER directory.
+echo cd ..
+cd ..
+echo mv CPP/pertempt SERVER/pertempt
+mv CPP/pertempt SERVER/pertempt
+# The last task is to give executable permissions to pertempt application.
+echo chmod +x SERVER/pertempt
+chmod +x SERVER/pertempt
