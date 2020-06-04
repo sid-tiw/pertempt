@@ -105,6 +105,15 @@ person::person(string name, string user_name)
 	this->name = name;
 	this->user_name = user_name;
 }
+
+person::person(string user_name, string name, string image, string loc_univ) // for cassandra
+{
+	this->name = name;
+	this->user_name = user_name;
+	this->image = image;
+	this->loc_univ = loc_univ;
+}
+
 void person::print_details()
 {
 	cout << "-----------------\n";

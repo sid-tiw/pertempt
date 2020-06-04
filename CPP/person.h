@@ -49,6 +49,7 @@ public:
 	 */
 	person(FILE *, long int);
 	person(string, string);
+	person(string, string, string, string);
 	void print_details();
 	bool operator==(person &som);
 	bool operator!=(person &som) { return user_name != som.user_name; }
