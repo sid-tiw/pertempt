@@ -11,6 +11,29 @@
 #include "person.h"
 #include <set>
 
+#define ATTRIBUTES(i) ((i == 0) ? "username" \
+: (i == 1) ? "name" : (i == 2) ? "image" \
+: (i == 3) ? "loc_univ" : "")
+
+#define CREATE_KEYSPACE "CREATE KEYSPACE IF NOT EXISTS GITHUB WITH replication \
+= {'class': 'SimpleStrategy', 'replication_factor': 3};"
+
+#define USE_KEYSPACE "USE GITHUB;"
+
+#define CREATE_TYPE "CREATE TYPE IF NOT EXISTS person (\
+	username text,\
+	name text,\
+	image text,\
+	loc_univ text\
+);"
+
+#define CREATE_TABLE "CREATE TABLE IF NOT EXISTS test (\
+	username text PRIMARY KEY,\
+	connections list<frozen<person>>\
+);"
+
+#define INSERT_INTO_TABLE()
+
 /**
  * @brief Tells whether the person's details and its connection tree is available in Cassandra or not.
  * 
@@ -29,5 +52,15 @@ bool isAvailable(person root);
  */
 
 set<pair<person, int>> listAll(person root);
+
+/**
+ * @brief does a query
+ * 
+ * @param sess 
+ * @param query 
+ * @return true 
+ * @return false 
+ */
+bool do_query(CassSession *sess, string query);
 
 #endif

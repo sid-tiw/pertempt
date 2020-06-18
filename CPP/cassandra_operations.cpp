@@ -1,3 +1,14 @@
+/**
+ * @file cassandra_operations.cpp
+ * @author Siddhartha Tiwari (201851127@iiitvadodara.ac.in)
+ * @brief A file containing all the database operations required for the crawler.
+ * @version 0.1
+ * @date 2020-06-18
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
 #include <cassandra.h>
 #include "cassandra_operations.h"
 #include <string>
@@ -10,10 +21,15 @@ using namespace std;
 
 void connect_to_cassandra()
 {
+    //Connect to cluster here
     CassCluster *cluster = cass_cluster_new();
     CassSession *session = cass_session_new();
+
+    //Cluster contact
     cass_cluster_set_contact_points(cluster, "127.0.0.1");
+
     CassFuture *connection = cass_session_connect(session, cluster);
+
     if (cass_future_error_code(connection) == CASS_OK)
     {
         /* Run queries here */
@@ -23,6 +39,7 @@ void connect_to_cassandra()
     }
     else
     {
+        /* some error occured */
         const char *message;
         size_t message_length;
         cass_future_error_message(connection, &message, &message_length);
