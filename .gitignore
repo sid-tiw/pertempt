@@ -8,3 +8,9 @@ pertempt
 *.exe
 *.obj
 c_cpp_properties.json
+*.sln
+*.vcxproj
+*.filters
+*.user
+/Debug/*.*
+/x64/*.*
