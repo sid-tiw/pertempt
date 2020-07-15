@@ -8,37 +8,64 @@
 
 #ifndef __CASSANDRA_OPERATIONS__
 #define __CASSANDRA_OPERATIONS__
-#include "person.h"
 #include <set>
+#include <string>
 
-#define ATTRIBUTES(i) ((i == 0) ? "username" \
-: (i == 1) ? "name" : (i == 2) ? "image" \
-: (i == 3) ? "loc_univ" : "")
+#include "person.h"
 
-#define CREATE_KEYSPACE "CREATE KEYSPACE IF NOT EXISTS GITHUB WITH replication \
+#define ATTRIBUTES(i)             \
+	((i == 0) ? "username"        \
+			  : (i == 1) ? "name" \
+						 : (i == 2) ? "image" : (i == 3) ? "loc_univ" : "")
+
+#define CREATE_KEYSPACE \
+	"CREATE KEYSPACE IF NOT EXISTS GITHUB WITH replication \
 = {'class': 'SimpleStrategy', 'replication_factor': 3};"
 
 #define USE_KEYSPACE "USE GITHUB;"
 
-#define CREATE_TYPE "CREATE TYPE IF NOT EXISTS person (\
+#define CREATE_TYPE \
+	"CREATE TYPE IF NOT EXISTS person (\
 	username text,\
 	name text,\
 	image text,\
-	loc_univ text\
+	loc_univ text,\
+	level smallint\
 );"
 
-#define CREATE_TABLE "CREATE TABLE IF NOT EXISTS test (\
+#define CREATE_TABLE \
+	"CREATE TABLE IF NOT EXISTS tree (\
 	username text PRIMARY KEY,\
-	connections list<frozen<person>>\
+	connections list<frozen<person>>,\
+	scannedon timestamp\
 );"
-
-#define INSERT_INTO_TABLE()
 
 /**
- * @brief Tells whether the person's details and its connection tree is available in Cassandra or not.
+ * @brief This function calculates the query string to insert a set of persons into the tree table
  * 
+ * @param username :::: the username of the root of a particular tree
+ * @param connections :::: a set containing the details of the descendants of the root and the depth of each descendant
+ * @return std::string :::: the processed query string
+ */
+std::string insert_into_table(std::string username, set<pair<person, int>> connections);
+
+/**
+ * @brief It is a helping function of insert_into_table. It generates the UDT query of Cassandra.
+ * 
+ * @param prs the person for which to generate the query
+ * @param lev person's depth from the root
+ * @return std::string the UDT query string
+ */
+
+std::string person_queries(person prs, int lev);
+
+/**
+ * @brief Tells whether the person's details and its connection tree is
+ * available in Cassandra or not.
+ *
  * @param root :::: The person to search for.
- * @return true :::: if the person's connection tree is available in Cassandra's Cluster.
+ * @return true :::: if the person's connection tree is available in Cassandra's
+ * Cluster.
  * @return false :::: otherwise
  */
 
@@ -46,20 +73,22 @@ bool isAvailable(person root);
 
 /**
  * @brief Return the list of all the persons related to the person.
- * 
- * @param root :::: The person who is the root of the connection tree that is seeked.
- * @return set<pair<person, int>> :::: The list of all the connections of the person with their respective depths.
+ *
+ * @param root :::: The person who is the root of the connection tree that is
+ * seeked.
+ * @return set<pair<person, int>> :::: The list of all the connections of the
+ * person with their respective depths.
  */
 
 set<pair<person, int>> listAll(person root);
 
 /**
  * @brief does a query
- * 
- * @param sess 
- * @param query 
- * @return true 
- * @return false 
+ *
+ * @param sess
+ * @param query
+ * @return true
+ * @return false
  */
 bool do_query(CassSession *sess, string query);
 
