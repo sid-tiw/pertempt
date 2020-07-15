@@ -1,31 +1,40 @@
 /**
  * @file cassandra_operations.cpp
  * @author Siddhartha Tiwari (201851127@iiitvadodara.ac.in)
- * @brief A file containing all the database operations required for the crawler.
+ * @brief A file containing all the database operations required for the
+ * crawler.
  * @version 0.1
  * @date 2020-06-18
- * 
+ *
  * @copyright Copyright (c) 2020
- * 
+ *
  */
 
-#include <cassandra.h>
 #include "cassandra_operations.h"
-#include <string>
+
+#include <cassandra.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <iostream>
+#include <string>
+
+/*
+For getting the time elpased since epoch
+*/
+#include <ctime>
+
 #include "person.h"
 
 using namespace std;
 
 void connect_to_cassandra()
 {
-    //Connect to cluster here
+    // Connect to cluster here
     CassCluster *cluster = cass_cluster_new();
     CassSession *session = cass_session_new();
 
-    //Cluster contact
+    // Cluster contact
     cass_cluster_set_contact_points(cluster, "127.0.0.1");
 
     CassFuture *connection = cass_session_connect(session, cluster);
@@ -68,18 +77,22 @@ bool do_query(CassSession *sess, string query)
     cass_future_free(query_handle);
     const CassRow *row = cass_result_first_row(result);
     set<person> list_of_persons;
-    CassIterator *list = cass_iterator_from_collection(cass_row_get_column_by_name(row, "connections"));
+    CassIterator *list = cass_iterator_from_collection(
+        cass_row_get_column_by_name(row, "connections"));
     do
     {
         const CassValue *temp_val = cass_iterator_get_value(list);
-        CassIterator *temp_iterator = cass_iterator_fields_from_user_type(temp_val);
+        CassIterator *temp_iterator =
+            cass_iterator_fields_from_user_type(temp_val);
         string val_arr[4];
         int counter = 0;
         do
         {
             char *t_out;
             size_t *t_size;
-            cass_value_get_string(cass_iterator_get_user_type_field_value(temp_iterator), &t_out, t_size);
+            cass_value_get_string(
+                cass_iterator_get_user_type_field_value(temp_iterator), &t_out,
+                t_size);
             val_arr[counter] = "";
             for (int ind = 0; ind < (*t_size); ind++)
                 val_arr[counter] += t_out[ind];
@@ -91,4 +104,34 @@ bool do_query(CassSession *sess, string query)
     } while (cass_iterator_next(list));
     cass_iterator_free(list);
     cass_result_free(result);
+}
+
+string insert_into_table(string username, set<pair<person, int>> connections)
+{
+    time_t t_res = time(nullptr);
+    string curr_time = string(asctime(gmtime(&t_res)));
+    string parsed_query =
+        "INSERT INTO tree (username, connections) VALUES (\'" + username +
+        "\', [";
+
+    auto it = connections.begin();
+    for (it; it != connections.end(); it++)
+    {
+        parsed_query += person_queries((*it).first, (*it).second);
+        if (it != (--connections.end()))
+            parsed_query += ", ";
+    }
+
+    parsed_query += ("], " + curr_time + ")");
+
+    return parsed_query;
+}
+
+string person_queries(person prs, int level)
+{
+    string parsed = "{ username: \'" + prs.get_uname() + "\', name: \'" +
+                    prs.get_name() + "\', image: \'" + prs.get_image() +
+                    "\', locuniv: \'" + prs.get_locu() + "\', level: " +
+                    to_string(level) + "}";
+    return parsed;
 }
