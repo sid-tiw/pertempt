@@ -1,6 +1,8 @@
 # Pertempt 
 Hey Github Users! Search for your closest connection on Github.
 
+![Code Quality Score](https://www.code-inspector.com/project/11040/score/svg)           ![Code Grade](https://www.code-inspector.com/project/11040/status/svg)
+
 ## Authors
 - Siddhartha Tiwari
 - Siddharth Mani Tiwari
